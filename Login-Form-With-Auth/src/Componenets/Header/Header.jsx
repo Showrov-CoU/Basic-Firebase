@@ -3,13 +3,13 @@ import { NavLink } from "react-router-dom";
 const Header = () => {
   const links = (
     <>
-      <li>
+      <li className="text-[#d926a9] text-base">
         <NavLink to="/">Home</NavLink>
       </li>
-      <li>
+      <li className="text-[#d926a9] text-base">
         <NavLink to="/login">Login</NavLink>
       </li>
-      <li>
+      <li className="text-[#d926a9] text-base">
         <NavLink to="/register">Register</NavLink>
       </li>
     </>
@@ -19,7 +19,10 @@ const Header = () => {
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+            <label
+              tabIndex={0}
+              className="btn btn-ghost lg:hidden text-[#d926a9]"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -37,7 +40,7 @@ const Header = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52 text-[#d926a9]"
             >
               {links}
             </ul>
