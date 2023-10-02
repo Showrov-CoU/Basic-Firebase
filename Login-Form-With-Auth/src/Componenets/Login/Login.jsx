@@ -1,15 +1,49 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+import { useRef, useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
+  const [registerError, setRegisterError] = useState("");
+  const [success, setSuccess] = useState("");
+  const emailRef = useRef(null);
+
   const handleLogIn = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const pass = e.target.password.value;
     console.log(email, pass);
 
+    setRegisterError("");
+    setSuccess("");
+
     signInWithEmailAndPassword(auth, email, pass)
-      .then((result) => console.log(result.user))
+      .then((result) => {
+        setSuccess("User Logged in successfully");
+        console.log(result.user);
+      })
+      .catch((error) => {
+        setRegisterError(error.message);
+        console.log(error.message);
+      });
+  };
+
+  const handleResetPassword = () => {
+    const email = emailRef.current.value;
+    if (!email) {
+      setRegisterError("Please enter your email");
+      return;
+    } else if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)) {
+      setRegisterError("Please write your valid email");
+      return;
+    }
+    console.log("Yes ok");
+    console.log(emailRef.current.value);
+    sendPasswordResetEmail(auth, email)
+      .then(() => alert("Please check your email"))
       .catch((error) => console.log(error.message));
   };
 
@@ -34,7 +68,8 @@ const Login = () => {
                   </label>
                   <input
                     type="text"
-                    placeholder="email"
+                    placeholder="Your Email"
+                    ref={emailRef}
                     name="email"
                     className="input input-bordered"
                   />
@@ -45,12 +80,16 @@ const Login = () => {
                   </label>
                   <input
                     type="password"
-                    placeholder="password"
+                    placeholder="Password"
                     name="password"
                     className="input input-bordered"
                   />
                   <label className="label">
-                    <a href="#" className="label-text-alt link link-hover">
+                    <a
+                      onClick={handleResetPassword}
+                      href="#"
+                      className="label-text-alt link link-hover"
+                    >
                       Forgot password?
                     </a>
                   </label>
@@ -59,6 +98,16 @@ const Login = () => {
                   <button className="btn btn-secondary">Login</button>
                 </div>
               </form>
+              {registerError && (
+                <p className="text-red-400 pb-2">{registerError}</p>
+              )}
+              {success && <p className="text-green-600 pb-2">{success}</p>}
+              <p>
+                New to this site? Please
+                <NavLink to="/register">
+                  <span className="text-[#d926a9]"> Register</span>
+                </NavLink>
+              </p>
             </div>
           </div>
         </div>

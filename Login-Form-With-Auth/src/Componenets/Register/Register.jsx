@@ -1,7 +1,12 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  updateProfile,
+} from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 
 const Register = () => {
   const [registerError, setRegisterError] = useState("");
@@ -11,6 +16,7 @@ const Register = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("ok");
+    const name = e.target.name.value;
     const email = e.target.email.value;
     const pass = e.target.password.value;
     const checkBox = e.target.terms.checked;
@@ -30,6 +36,16 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, pass)
       .then((result) => {
         setSuccess("User created successfully");
+        // verify email
+        sendEmailVerification(result.user).then(() =>
+          alert("please check your email and verify account")
+        );
+        //Update user name
+        updateProfile(result.user, {
+          displayName: name,
+        })
+          .then(() => console.log("profile Updated"))
+          .catch((error) => console.log(error.message));
         console.log(result.user);
       })
       .catch((error) => {
@@ -44,6 +60,13 @@ const Register = () => {
           Please Register
         </h1>
         <form onSubmit={handleSubmit} className="space-y-3 w-[40%]">
+          <input
+            type="text"
+            name="name"
+            placeholder="Your name"
+            className="input input-bordered w-full"
+            required
+          />
           <input
             type="email"
             name="email"
@@ -78,6 +101,12 @@ const Register = () => {
         </form>
         {registerError && <p className="text-red-400 pb-2">{registerError}</p>}
         {success && <p className="text-green-600 pb-2">{success}</p>}
+        <p>
+          Already have an account? Please
+          <NavLink to="/login">
+            <span className="text-[#d926a9]"> Login</span>
+          </NavLink>
+        </p>
       </div>
     </div>
   );
