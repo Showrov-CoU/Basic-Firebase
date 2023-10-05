@@ -6,7 +6,7 @@ const Home = () => {
   console.log(user);
   return (
     <div>
-      <h1>This is home</h1>
+      <h1>This is home and user email is : {user?.email} </h1>
     </div>
   );
 };
