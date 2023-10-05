@@ -1,7 +1,7 @@
 [
     {
         "id": "0",
-        "name": "All News"
+        "name": "National News"
     },
     {
         "id": "1",
@@ -30,5 +30,9 @@
     {
         "id": "7",
         "name": "Arts"
+    },
+    {
+        "id": "8",
+        "name": "All News"
     }
 ]
