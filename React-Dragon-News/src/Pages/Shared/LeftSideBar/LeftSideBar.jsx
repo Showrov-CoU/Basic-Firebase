@@ -6,14 +6,16 @@ const LeftSideBar = () => {
   useEffect(() => {
     fetch("/categories.json")
       .then((res) => res.json())
-      .then((result) => setCategory(result));
+      .then((result) => {
+        setCategory(result);
+        //let [fisrt, ...rest] = category;
+      });
   }, []);
+
   return (
     <div>
-      <h1 className="text-2xl mb-2 font-bold">
-        All Category{category.length}{" "}
-      </h1>
-
+      <h1 className="text-2xl mb-2 font-bold">All Category</h1>
+      <h1></h1>
       {category.map((item) => (
         <Link
           to={`/category/${item.id}`}
