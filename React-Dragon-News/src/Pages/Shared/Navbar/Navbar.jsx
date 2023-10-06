@@ -1,11 +1,18 @@
 import { Link, NavLink } from "react-router-dom";
 import profilePic from "../../../assets/user.png";
+import { useContext } from "react";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  // console.log(user);
+  const handleLogout = () => {
+    logOut().then().catch();
+  };
   const links = (
     <>
       <li>
-        <NavLink to="/home">Home</NavLink>
+        <NavLink to="/">Home</NavLink>
       </li>
       <li>
         <NavLink to="/about">About</NavLink>
@@ -52,7 +59,15 @@ const Navbar = () => {
             <img src={profilePic} />
           </div>
         </label>
-        <Link className="btn">Login</Link>
+        {user ? (
+          <button onClick={handleLogout} className="btn">
+            Logout
+          </button>
+        ) : (
+          <Link to="/login">
+            <button className="btn">Login</button>
+          </Link>
+        )}
       </div>
     </div>
   );
